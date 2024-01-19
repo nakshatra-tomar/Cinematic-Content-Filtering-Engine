@@ -4,13 +4,19 @@ import pandas
 
 
 
+
 st.title('Cinematic Content Filtering Engine')
 
-movies_list = pickle.load(open('movies.pkl','rb'))
+#movies_list = pickle.load(open('movies.pkl','rb')) #gives error
 
-movies_list = movies_list['titles'].values
+movies_list = pickle.load(open('movies_dictionary.pkl', 'rb'))
+movies = pandas.DataFrame(movies_list)
 
-st.selectbox(
+
+selected_movie = st.selectbox(
     'What movie would you like suggestions for?',
-    ('Email', 'Home phone', 'Mobile phone'))
+    movies['title'].values)
+
+if st.button('Recommend me something similar'):
+    st.write('aCC')
 

@@ -1,7 +1,7 @@
 import streamlit as st
 import pickle
 import pandas
-
+import requests
 
 def recom(movie):
     movie_index = movies[movies['title'] == movie].index[0]
@@ -10,9 +10,20 @@ def recom(movie):
     movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6]
 
     recom_movies = []
+    recom_poster = []
     for i in movies_list:
+        movie_id = i[0]
+
         recom_movies.append(movies.iloc[i[0]]['title'])
-    return recom_movies
+
+        recom_poster.append(poster(i[0]))
+    return recom_movies, recom poster
+
+def poster(movie_id):
+    response = requests.get( https://api.themoviedb.org/3/movie/{}.format(movie_id))
+    data = response.json()
+    return "https://image.tmdb.org/t/p/w500/" + data['poster_path']
+
 
 st.title('Cinematic Content Filtering Engine')
 
@@ -28,6 +39,7 @@ selected_movie = st.selectbox(
     movies['title'].values)
 
 if st.button('Recommend me something similar'):
-    recommendations = recom(selected_movie)
+    recommendations,posters = recom(selected_movie)
+
     for i in recommendations:
         st.write(i)

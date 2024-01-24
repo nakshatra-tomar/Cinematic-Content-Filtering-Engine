@@ -3,7 +3,12 @@ import pickle
 import pandas
 import requests
 
-
+st.set_page_config(
+    page_title='ScreenSift.io',
+    page_icon='📋',
+    layout='wide',
+    initial_sidebar_state='expanded'
+)
 
 def recom(movie):
     movie_index = movies[movies['title'] == movie].index[0]
